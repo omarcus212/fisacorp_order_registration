@@ -38,5 +38,6 @@ cd fisacorp_order_registration
 
 ## Execute as migrations
 
-- docker-compose run --rm api composer migrate
+- docker exec -it backend-api php artisan migrate
 - Certifique-se de que todas as migrations foram executadas corretamente.
+- docker exec -it backend-api php artisan migrate:fresh
