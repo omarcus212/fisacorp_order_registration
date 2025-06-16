@@ -1,26 +1,4 @@
 services:
-  api:
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-    container_name: backend-api
-    ports:
-      - "8080:8080"
-    volumes:
-      - ./api:/var/www 
-    working_dir: /var/www
-    depends_on:
-      - mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      DB_HOST: backend-mysql
-      DB_DATABASE: db_order_registration
-      DB_USERNAME: root
-      DB_PASSWORD: password
-    command: php artisan serve --host=0.0.0.0 --port=8080
-    networks:
-      - laravel
-
   frontend:
     build:
       context: ./web
@@ -36,14 +14,31 @@ services:
     networks:
       - laravel
 
+  app:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: backend-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/var/www 
+    working_dir: /var/www
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+
   mysql:
     image: mysql:8.0
     container_name: backend-mysql
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: db_order_registration
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - mysql-data:/var/lib/mysql
     networks:

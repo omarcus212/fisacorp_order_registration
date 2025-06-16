@@ -31,8 +31,17 @@ cd fisacorp_order_registration
 * Utilize o arquivo .env.example como base, ele já possui as variáveis definidas para facilitar o - processo.
 * Atualize também os arquivos docker-compose.yml e phinx.yml com as informações do seu banco de dados, utilizando as variáveis que você definiu no .env.
 * ⚠️ Importante: Verifique se todas as variáveis de ambiente estão corretas antes de seguir para o próximo passo.
+* executar o composer install na api e voltar para a pasta raiz do projeto. (fisacorp_order_registration)
+
+```bash
+cd api
+composer install
+cd .. 
+```
 
 ## Suba os containers com Docker
+
+na pasta raiz do projeto execute o comando abaixo:
 
 - docker-compose up --build -d
 

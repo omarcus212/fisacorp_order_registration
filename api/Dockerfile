@@ -1,20 +1,23 @@
-FROM php:8.2-fpm
+FROM php:8.2
 
 RUN apt-get update && apt-get install -y \
-    zip \
-    unzip \
-    git \
-    sqlite3 \
-    libsqlite3-dev \
-    && rm -rf /var/lib/apt/lists/*
+    build-essential \
+    libpng-dev \
+    libjpeg-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip unzip curl git nano libzip-dev libpq-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
-RUN docker-php-ext-install mysqli
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
-RUN curl -sS https://getcomposer.org/installer 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
+COPY . .
 
-EXPOSE 8080
+RUN composer install
+
+CMD ["bash", "-c", "php artisan serve --host=0.0.0.0 --port=8000"]
+# CMD ["bash", "-c", "composer install && php artisan serve --host=0.0.0.0 --port=8000"]
+
+EXPOSE 8000
