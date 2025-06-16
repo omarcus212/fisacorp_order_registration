@@ -44,6 +44,10 @@ cd ..
 na pasta raiz do projeto execute o comando abaixo:
 
 - docker-compose up --build -d
+  
+#gerar key
+
+- docker exec -it backend-api php artisan key:generate
 
 ## Execute as migrations
 
