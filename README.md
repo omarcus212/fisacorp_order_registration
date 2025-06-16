@@ -19,7 +19,7 @@ Este projeto é um sistema de registro de pedidos, composto por um **backend em 
 
 ```bash
 
-git clone https://https://github.com/omarcus212/fisacorp_order_registration
+git clone https://github.com/omarcus212/fisacorp_order_registration
 cd fisacorp_order_registration
 
 ```
