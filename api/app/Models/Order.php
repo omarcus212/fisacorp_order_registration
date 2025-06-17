@@ -16,12 +16,11 @@ class Order extends Model
         return $res;
     }
 
-    public static function getOrderId($body)
+    public static function getCustomerOrderId($id)
     {
-        $res = DB::table('orders')->where($body->id)->get();
+        $res = DB::table('orders')->where('customer_id', '=', $id)->get();
         return $res;
     }
-
 
     public static function saveOrder($body)
     {
@@ -50,6 +49,12 @@ class Order extends Model
             return null;
         }
 
+        return $res;
+    }
+
+    public static function deleteOrders($id)
+    {
+        $res = DB::table('orders')->delete($id);
         return $res;
     }
 

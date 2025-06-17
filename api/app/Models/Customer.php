@@ -8,15 +8,6 @@ class Customer extends Model
 {
     protected $fillable = ['name'];
 
-
-    // public static function getCustomer($name)
-    // {
-    //     $res = DB::table('customer')
-    //         ->select('id', 'name')
-    //         ->where('name', 'like', $name)
-    //         ->get();
-    //     return $res;
-    // }
     public static function getAllCustomer()
     {
         $res = DB::table('customer')->get();
@@ -53,9 +44,9 @@ class Customer extends Model
         return $res;
     }
 
-    public static function deleteCustomer($body)
+    public static function deleteCustomer($idCustomer)
     {
-        $res = DB::table('customer')->delete($body->idCustomer);
+        $res = DB::table('customer')->delete($idCustomer);
         return $res;
     }
 

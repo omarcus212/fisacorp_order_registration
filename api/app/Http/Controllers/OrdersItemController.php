@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Order;
 use App\Models\OrderItem;
+use DB;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrdersItemController
@@ -12,71 +13,43 @@ class OrdersItemController
     {
 
         $data = new OrderItem();
-        $ordersItem = $data->saveOrderItem($request);
 
-        if ($ordersItem) {
+        try {
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $ordersItem,
-            ])->setStatusCode(200);
+            DB::beginTransaction();
 
-        } else {
+            for ($i = 0; $i < count($request->data); $i++) {
 
-            return response()->json([
-                'status' => 'erro',
-                'message' => 'Não foi possivel adicionar o item',
-            ], 400);
+                $ordersItem = $data->saveOrderItem($request->order_id, $request->data[$i]);
 
-        }
+            }
 
-    }
+            DB::commit();
 
+            if (!$ordersItem) {
 
-    public function updateOrdersItem(Request $request)
-    {
+                return response()->json([
+                    'status' => 'erro',
+                    'message' => 'Não foi possivel adicionar o item',
+                ], 400);
 
-        $data = new OrderItem();
-        $ordersItem = $data->updateOrderItem($request);
+            } else {
 
-        if ($ordersItem) {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $ordersItem,
+                ])->setStatusCode(200);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $ordersItem,
-            ])->setStatusCode(200);
+            }
 
-        } else {
+        } catch (Exception $e) {
+
+            DB::rollBack();
 
             return response()->json([
                 'status' => 'erro',
                 'message' => 'Não foi possivel adicionar o item',
-            ], 400);
-
-        }
-
-    }
-
-
-    public function deleteOrdersItem(Request $request)
-    {
-
-        $data = new OrderItem();
-        $ordersItem = $data->deleteOrderItem($request);
-
-        if ($ordersItem) {
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $ordersItem,
-            ])->setStatusCode(200);
-
-        } else {
-
-            return response()->json([
-                'status' => 'erro',
-                'message' => 'Não foi possivel remover o item',
-            ], 400);
+            ], 500);
 
         }
 
@@ -99,7 +72,7 @@ class OrdersItemController
         } else {
 
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'data' => $ordersItem,
             ])->setStatusCode(200);
 
@@ -117,14 +90,14 @@ class OrdersItemController
         if (!$ordersItem) {
 
             return response()->json([
-                'status' => 'success',
+                'status' => 'default',
                 'data' => '00,00',
             ], 422);
 
         } else {
 
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'data' => $ordersItem,
             ])->setStatusCode(200);
 

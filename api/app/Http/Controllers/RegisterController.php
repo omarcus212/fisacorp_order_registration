@@ -24,7 +24,7 @@ class RegisterController
         } else {
 
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'data' => $ordersRegister,
             ])->setStatusCode(200);
 

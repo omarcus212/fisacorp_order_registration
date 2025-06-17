@@ -14,40 +14,16 @@ class OrderItem extends Model
         'unit_price',
     ];
 
-    public static function saveOrderItem($body)
+    public static function saveOrderItem($order_id, $body)
     {
         $res = DB::table('order_items')->insert([
-            'order_id' => $body->order_id,
-            'product_id' => $body->product_id,
-            'quantity' => $body->quantity,
-            'unit_price' => $body->unit_price,
+            'order_id' => $order_id,
+            'product_id' => $body['product_id'],
+            'quantity' => $body['quantity'],
+            'unit_price' => $body['unit_price'],
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
-        return $res;
-    }
-
-    public static function updateOrderItem($body)
-    {
-        $res = DB::table('order_items')
-            ->where('product_id', $body->product_id)
-            ->update([
-                'order_id' => $body->order_id,
-                'quantity' => $body->quantity,
-                'unit_price' => $body->unit_price,
-                'updated_at' => now()
-            ]);
-
-        return $res;
-    }
-
-    public static function deleteOrderItem($body)
-    {
-        $res = DB::table('order_items')
-            ->where('order_id', $body->order_id)
-            ->where('product_id', $body->product_id)
-            ->delete();
 
         return $res;
     }
@@ -93,6 +69,12 @@ class OrderItem extends Model
             return null;
         }
 
+        return $res;
+    }
+
+    public static function deleteOrdersItemCustomer($id)
+    {
+        $res = DB::table('order_items')->where('order_id', '=', $id)->delete();
         return $res;
     }
 

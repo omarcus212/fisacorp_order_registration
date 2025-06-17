@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CanceledController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\OrdersItemController;
 use App\Http\Controllers\ProductsController;
@@ -22,10 +23,8 @@ Route::put('/orders', [CustomerController::class, 'updateOrders']);
 Route::get('/products', [ProductsController::class, 'getProducts']);
 
 Route::get('/register', [RegisterController::class, 'getRegister']);
-Route::get('/canceled/{id}', [CustomerController::class, 'canceled']);
+Route::delete('/canceled/{id}', [CanceledController::class, 'canceled']);
 
 Route::get('/ordersItem/{id}', [OrdersItemController::class, 'getOrdersItemId']);
 Route::post('/ordersItem', [OrdersItemController::class, 'createOrdersItem']);
-Route::put('/ordersItem', [OrdersItemController::class, 'updateOrdersItem']);
-Route::delete('/ordersItem', [OrdersItemController::class, 'deleteOrdersItem']);
 Route::get('/ordersItemTotal', [OrdersItemController::class, 'OrdersItemTotal']);

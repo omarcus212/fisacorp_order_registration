@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\Order;
+use Exception;
 use Illuminate\Http\Request;
 
 class OrdersController
@@ -14,24 +15,34 @@ class OrdersController
         $data = new Order();
         $dataCustomer = new Customer();
 
-        $orders = $data->saveOrder($request);
+        try {
 
-        if ($orders) {
+            $orders = $data->saveOrder($request);
 
-            return response()->json([
-                'status' => 'success',
-                'data' => $orders,
-            ])->setStatusCode(200);
+            if ($orders) {
 
-        } else {
+                return response()->json([
+                    'status' => 'success',
+                    'data' => $orders,
+                ])->setStatusCode(200);
 
-            $orders = $dataCustomer->deleteCustomer($request);
+            } else {
+
+                $orders = $dataCustomer->deleteCustomer($request);
+                return response()->json([
+                    'status' => 'erro',
+                    'message' => 'Não foi possivel registrar o pedido',
+                ], 400);
+
+            }
+
+        } catch (Exception $e) {
+
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel registrar o cliente',
-            ], 400);
+                'message' => 'Não foi possivel registrar o pedido',
+            ], 500);
 
         }
-
     }
 }

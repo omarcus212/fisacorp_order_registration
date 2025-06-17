@@ -23,7 +23,7 @@ class ProductsController
         } else {
 
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'data' => $products,
             ])->setStatusCode(200);
 

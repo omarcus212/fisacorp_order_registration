@@ -30,19 +30,19 @@ class CustomerController extends Controller
 
         $customers = $data->saveCustomer($request);
 
-        if ($customers) {
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $customers,
-            ])->setStatusCode(200);
-
-        } else {
+        if (!$customers) {
 
             return response()->json([
                 'status' => 'erro',
                 'message' => 'Não foi possivel registrar o cliente',
             ], 400);
+
+        } else {
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $customers,
+            ])->setStatusCode(200);
 
         }
 
@@ -55,19 +55,19 @@ class CustomerController extends Controller
 
         $customers = $data->updateCustomer($request);
 
-        if ($customers) {
-
-            return response()->json([
-                'status' => 'success',
-                'data' => $customers,
-            ])->setStatusCode(200);
-
-        } else {
+        if (!$customers) {
 
             return response()->json([
                 'status' => 'erro',
                 'message' => 'Não foi possivel registrar o cliente',
             ], 400);
+
+        } else {
+
+            return response()->json([
+                'status' => 'success',
+                'data' => $customers,
+            ])->setStatusCode(200);
 
         }
 
