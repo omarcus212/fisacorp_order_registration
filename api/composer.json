@@ -11,6 +11,7 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.10.1"
     },
     "require-dev": {
@@ -40,6 +41,7 @@
         "migrate": "php artisan migrate",
         "create-migration": "php artisan make:migration",
         "rollback-migration": "php artisan migrate:rollback",
+        "create-model": "php artisan make:model",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Models;
+
+use DB;
+use Illuminate\Database\Eloquent\Model;
+class Customer extends Model
+{
+    protected $fillable = ['name'];
+
+
+    // public static function getCustomer($name)
+    // {
+    //     $res = DB::table('customer')
+    //         ->select('id', 'name')
+    //         ->where('name', 'like', $name)
+    //         ->get();
+    //     return $res;
+    // }
+    public static function getAllCustomer()
+    {
+        $res = DB::table('customer')->get();
+        return $res;
+    }
+
+    public static function saveCustomer($body)
+    {
+        $id = DB::table('customer')->insertGetId([
+            'name' => $body->name,
+        ]);
+
+        $res = DB::table('customer')
+            ->select('id', 'name')
+            ->where('id', $id)
+            ->first();
+
+        return $res;
+    }
+
+    public static function updateCustomer($body)
+    {
+        DB::table('customer')
+            ->where('id', $body->id)
+            ->update([
+                'name' => $body->name,
+            ]);
+
+        $res = DB::table('customer')
+            ->select('id', 'name')
+            ->where('id', $body->id)
+            ->first();
+
+        return $res;
+    }
+
+    public static function deleteCustomer($body)
+    {
+        $res = DB::table('customer')->delete($body->idCustomer);
+        return $res;
+    }
+
+}
