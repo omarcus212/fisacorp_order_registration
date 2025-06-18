@@ -6,12 +6,12 @@ interface ITextTittle {
 }
 
 
-const TextTittle: React.FC<ITextTittle> = ({ className, text }) => {
+const Text: React.FC<ITextTittle> = ({ className, text }) => {
 
     return (
 
-        <h2 className={`flex flex-wrap w-full ${className}`}>{text}</h2>
+        <p className={`flex flex-wrap w-full ${className}`}>{text}</p>
     )
 }
 
-export default TextTittle;
+export default Text;

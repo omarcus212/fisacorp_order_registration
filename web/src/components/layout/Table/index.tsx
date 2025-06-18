@@ -1,9 +1,11 @@
 import React from "react";
 
 import DataTable, { type TableStyles } from "react-data-table-component";
+import type { Product } from "../../../interface/product";
+import type { OrderItem } from "../../../interface/orderItem";
 
 interface ITable {
-    data: Array<Object>,
+    data: Array<Object> | Product | OrderItem | undefined,
     column: Array<Object>,
     titleTable?: string,
     typeMessage?: boolean,
@@ -54,14 +56,14 @@ const Table: React.FC<ITable> = ({ data, column, typeMessage }) => {
 
                 <DataTable
                     columns={column}
-                    data={data}
+                    data={Array.isArray(data) ? data : []}
                     striped={true}
                     responsive={true}
                     customStyles={customStyles}
                     pagination={true}
                     fixedHeader={true}
-                    noDataComponent={typeMessage ? 'Erro ao carregar os dados...' : 'Nada a trazer...'}
-                    noTableHead={true}
+                    noDataComponent={typeMessage ? 'Erro ao carregar os dados...' : 'Nenhum dado encontrado!'}
+                    noTableHead={false}
 
                 />
 
