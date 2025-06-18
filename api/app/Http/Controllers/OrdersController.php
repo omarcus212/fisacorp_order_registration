@@ -9,6 +9,22 @@ use Illuminate\Http\Request;
 
 class OrdersController
 {
+
+
+    public function getOrders(Request $request)
+    {
+
+        $id = $request->Route('id');
+        $data = new Order();
+
+        $orders = $data->getCustomerOrderId($id);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $orders,
+        ])->setStatusCode(200);
+
+    }
     public function createOrders(Request $request)
     {
 

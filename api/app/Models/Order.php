@@ -18,7 +18,19 @@ class Order extends Model
 
     public static function getCustomerOrderId($id)
     {
-        $res = DB::table('orders')->where('customer_id', '=', $id)->get();
+        $res = DB::table('orders')
+            ->join('customer', 'orders.customer_id', '=', 'customer.id')
+            ->where('customer.id', $id)
+            ->select(
+                'orders.id',
+                'orders.delivery_date',
+                'orders.created_at',
+                'customer.id as customer_id',
+                'customer.name'
+            )
+            ->orderBy('orders.created_at', 'desc')
+            ->first();
+
         return $res;
     }
 

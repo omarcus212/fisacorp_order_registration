@@ -16,6 +16,7 @@ Route::post('/customer', [CustomerController::class, 'createCustomer'])
     ->middleware(BadRequest::class);
 Route::put('/customer/{id}', [CustomerController::class, 'updateCustomer']);
 
+Route::get('/orders/{id}', [OrdersController::class, 'getOrders']);
 Route::post('/orders', [OrdersController::class, 'createOrders'])
     ->middleware(BadRequestOrder::class);
 Route::put('/orders', [CustomerController::class, 'updateOrders']);
