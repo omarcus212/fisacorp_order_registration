@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\OrderItem;
+use App\Models\Product;
 use DB;
 use Exception;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ class OrdersItemController
     {
 
         $data = new OrderItem();
+        $products = new Product();
 
         try {
 
@@ -20,8 +22,20 @@ class OrdersItemController
 
             for ($i = 0; $i < count($request->data); $i++) {
 
-                $ordersItem = $data->saveOrderItem($request->order_id, $request->data[$i]);
+                $productsData = $products->updateStockQuantity($request->data[$i]);
 
+                if ($productsData) {
+
+                    $ordersItem = $data->saveOrderItem($request->order_id, $request->data[$i]);
+
+                } else {
+
+                    return response()->json([
+                        'status' => 'default',
+                        'error' => "Estoque insuficiente para o produto ID {$request->data[$i]['name']}."
+                    ], 400);
+
+                }
             }
 
             DB::commit();

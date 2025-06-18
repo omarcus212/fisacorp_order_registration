@@ -31,9 +31,9 @@ class CanceledController
 
                     if ($orderData || $orderData == 0) {
 
-                        $customerData = $customer->deleteCustomer(1);
+                        $customerData = $customer->deleteCustomer($idCustomer);
 
-                        if (!$customerData || $customerData == 0) {
+                        if ($customerData || $customerData == 0) {
 
                             return response()->json([
                                 'status' => 'success',

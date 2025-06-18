@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name', 100);
             $table->decimal('price', 10, 2);
-            $table->string('img', 255)->nullable();
+            $table->text('img')->nullable();
             $table->integer('stock_quantity');
             $table->timestamps();
         });

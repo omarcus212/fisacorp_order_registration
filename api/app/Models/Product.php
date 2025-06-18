@@ -22,4 +22,23 @@ class Product extends Model
 
         return $res;
     }
+
+    public static function updateStockQuantity($body)
+    {
+
+        $productId = $body['product_id'];
+        $quantityPurchased = $body['quantity'];
+
+        $product = DB::table('products')->where('id', $productId)->first();
+
+        if ($product->stock_quantity < $quantityPurchased) {
+            return null;
+        }
+
+        $res = DB::table('products')->where('id', $productId)->update([
+            'stock_quantity' => $product->stock_quantity - $quantityPurchased
+        ]);
+
+        return $res;
+    }
 }
