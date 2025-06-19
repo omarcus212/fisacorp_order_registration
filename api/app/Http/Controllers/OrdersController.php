@@ -19,10 +19,19 @@ class OrdersController
 
         $orders = $data->getCustomerOrderId($id);
 
+        if ($orders) {
+
+            return response()->json([
+                'status' => 'success',
+                'res' => $orders,
+            ])->setStatusCode(200);
+        }
+
         return response()->json([
-            'status' => 'success',
-            'data' => $orders,
+            'status' => 'erro',
+            'res' => 'Não foi possível encontrar o pedido',
         ])->setStatusCode(200);
+
 
     }
     public function createOrders(Request $request)
@@ -39,7 +48,7 @@ class OrdersController
 
                 return response()->json([
                     'status' => 'success',
-                    'data' => $orders,
+                    'res' => $orders,
                 ])->setStatusCode(200);
 
             } else {
@@ -47,8 +56,8 @@ class OrdersController
                 $orders = $dataCustomer->deleteCustomer($request);
                 return response()->json([
                     'status' => 'erro',
-                    'message' => 'Não foi possivel registrar o pedido',
-                ], 400);
+                    'res' => 'Não foi possivel registrar o pedido',
+                ], 422);
 
             }
 
@@ -56,8 +65,8 @@ class OrdersController
 
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel registrar o pedido',
-            ], 500);
+                'res' => 'Não foi possivel registrar o pedido',
+            ], 400);
 
         }
     }

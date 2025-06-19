@@ -11,21 +11,21 @@ class RegisterController
     {
 
         $data = new Order();
-
-        $ordersRegister = $data->getOrderRegisterList($request);
+        $search = $request->query('search');
+        $ordersRegister = $data->getOrderRegisterList($search);
 
         if (!$ordersRegister) {
 
             return response()->json([
                 'status' => 'erro',
-                'data' => 'Nenhum registro encontrado.',
+                'res' => 'Nenhum registro encontrado.',
             ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $ordersRegister,
+                'res' => $ordersRegister,
             ])->setStatusCode(200);
 
         }

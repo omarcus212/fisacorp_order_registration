@@ -11,20 +11,21 @@ class ProductsController
     {
 
         $data = new Product();
-        $products = $data->getProducts($request);
+        $search = $request->query('search');
+        $products = $data->getProducts($search);
 
         if (!$products) {
 
             return response()->json([
                 'status' => 'erro',
-                'data' => 'Nenhum produto encontrado.',
+                'res' => 'Nenhum produto encontrado.',
             ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $products,
+                'res' => $products,
             ])->setStatusCode(200);
 
         }

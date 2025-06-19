@@ -28,4 +28,4 @@ Route::delete('/canceled/{id}', [CanceledController::class, 'canceled']);
 
 Route::get('/ordersItem/{id}', [OrdersItemController::class, 'getOrdersItemId']);
 Route::post('/ordersItem', [OrdersItemController::class, 'createOrdersItem']);
-Route::get('/ordersItemTotal', [OrdersItemController::class, 'OrdersItemTotal']);
+Route::get('/ordersItemTotal/{id}', [OrdersItemController::class, 'OrdersItemTotal']);

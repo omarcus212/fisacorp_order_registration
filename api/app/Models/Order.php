@@ -13,6 +13,11 @@ class Order extends Model
     public static function getAllOrder()
     {
         $res = DB::table('orders')->get();
+
+        if (count($res) == 0) {
+            return null;
+        }
+
         return $res;
     }
 
@@ -45,7 +50,7 @@ class Order extends Model
     }
 
 
-    public static function getOrderRegisterList($body)
+    public static function getOrderRegisterList($search)
     {
         $res = DB::table('orders')
             ->join('customer', 'orders.customer_id', '=', 'customer.id')
@@ -54,7 +59,7 @@ class Order extends Model
                 'customer.name as customer_name',
                 'orders.created_at as order_date',
                 'orders.delivery_date'
-            )->where('customer.name', 'like', '%' . $body->search . '%')
+            )->where('customer.name', 'like', '%' . $search . '%')
             ->get();
 
         if (count($res) == 0) {

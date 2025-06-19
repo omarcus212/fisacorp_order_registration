@@ -28,7 +28,7 @@ class OrderItem extends Model
         return $res;
     }
 
-    public static function getOrdersItemId($id)
+    public static function getOrdersItemIdCustomers($id)
     {
         $res = DB::table('orders')
             ->join('customer', 'orders.customer_id', '=', 'customer.id')
@@ -53,7 +53,7 @@ class OrderItem extends Model
         return $res;
     }
 
-    public static function OrdersItemTotal($body)
+    public static function OrdersItemTotal($customer_id)
     {
         $res = DB::table('orders')
             ->join('order_items', 'orders.id', '=', 'order_items.order_id')
@@ -61,7 +61,7 @@ class OrderItem extends Model
                 'orders.id as order_id',
                 DB::raw('SUM(order_items.quantity * order_items.unit_price) as total_order_price')
             )
-            ->where('orders.customer_id', $body->customer_id)
+            ->where('orders.customer_id', $customer_id)
             ->groupBy('orders.id')
             ->get();
 
@@ -71,7 +71,11 @@ class OrderItem extends Model
 
         return $res;
     }
-
+    public static function getOrdersItemId($id)
+    {
+        $res = DB::table('order_items')->where('order_id', '=', $id)->get();
+        return $res;
+    }
     public static function deleteOrdersItemCustomer($id)
     {
         $res = DB::table('order_items')->where('order_id', '=', $id)->delete();

@@ -32,8 +32,8 @@ class OrdersItemController
 
                     return response()->json([
                         'status' => 'default',
-                        'error' => "Estoque insuficiente para o produto ID {$request->data[$i]['name']}."
-                    ], 400);
+                        'res' => "Estoque insuficiente para o produto ID {$request->data[$i]['name']}."
+                    ], 422);
 
                 }
             }
@@ -44,14 +44,14 @@ class OrdersItemController
 
                 return response()->json([
                     'status' => 'erro',
-                    'message' => 'Não foi possivel adicionar o item',
-                ], 400);
+                    'res' => 'Não foi possivel adicionar o item',
+                ], 422);
 
             } else {
 
                 return response()->json([
                     'status' => 'success',
-                    'data' => $ordersItem,
+                    'res' => $ordersItem,
                 ])->setStatusCode(200);
 
             }
@@ -62,8 +62,8 @@ class OrdersItemController
 
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel adicionar o item',
-            ], 500);
+                'res' => 'Não foi possivel adicionar o item',
+            ], 400);
 
         }
 
@@ -74,20 +74,20 @@ class OrdersItemController
 
         $data = new OrderItem();
         $id = $request->route('id');
-        $ordersItem = $data->getOrdersItemId($id);
+        $ordersItem = $data->getOrdersItemIdCustomers($id);
 
         if (!$ordersItem) {
 
             return response()->json([
                 'status' => 'erro',
-                'data' => 'Nenhum produto encontrado.',
+                'res' => 'Nenhum produto encontrado.',
             ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $ordersItem,
+                'res' => $ordersItem,
             ])->setStatusCode(200);
 
         }
@@ -98,21 +98,22 @@ class OrdersItemController
     {
 
         $data = new OrderItem();
-        $ordersItem = $data->OrdersItemTotal($request);
+        $id = $request->route('id');
+        $ordersItem = $data->OrdersItemTotal($id);
 
 
         if (!$ordersItem) {
 
             return response()->json([
                 'status' => 'default',
-                'data' => '00,00',
+                'res' => '00,00',
             ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $ordersItem,
+                'res' => $ordersItem,
             ])->setStatusCode(200);
 
         }

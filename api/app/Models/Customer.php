@@ -14,6 +14,12 @@ class Customer extends Model
         return $res;
     }
 
+    public static function getCustomerId($id)
+    {
+        $res = DB::table('customer')->where('id', '=', $id)->get();
+        return $res;
+    }
+
     public static function saveCustomer($body)
     {
         $id = DB::table('customer')->insertGetId([

@@ -18,7 +18,7 @@ class CustomerController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $customers,
+            'res' => $customers,
         ])->setStatusCode(200);
 
     }
@@ -34,14 +34,14 @@ class CustomerController extends Controller
 
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel registrar o cliente',
-            ], 400);
+                'res' => 'Não foi possivel registrar o cliente',
+            ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $customers,
+                'res' => $customers,
             ])->setStatusCode(200);
 
         }
@@ -59,14 +59,14 @@ class CustomerController extends Controller
 
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel registrar o cliente',
-            ], 400);
+                'res' => 'Não foi possivel registrar o cliente',
+            ], 422);
 
         } else {
 
             return response()->json([
                 'status' => 'success',
-                'data' => $customers,
+                'res' => $customers,
             ])->setStatusCode(200);
 
         }

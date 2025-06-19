@@ -9,11 +9,11 @@ class Product extends Model
 {
     protected $fillable = ['name', 'price', 'stock_quantity'];
 
-    public static function getProducts($body)
+    public static function getProducts($search)
     {
         $res = DB::table('products')
             ->select('id', 'name', 'price', 'stock_quantity', 'img')
-            ->where('name', 'like', '%' . $body->search . '%')
+            ->where('name', 'like', '%' . $search . '%')
             ->get();
 
         if (count($res) == 0) {

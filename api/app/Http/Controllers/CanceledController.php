@@ -19,37 +19,86 @@ class CanceledController
         $orderItem = new OrderItem();
 
         try {
-            $customerOrderData = $order->getCustomerOrderId($idCustomer);
 
-            if ($customerOrderData) {
+            $oderRes = $order->getCustomerOrderId($idCustomer);
 
-                $orderItemData = $orderItem->deleteOrdersItemCustomer($customerOrderData[0]->id);
+            if ($oderRes) {
 
-                if ($orderItemData || $orderItemData == 0) {
+                $idOrder = $oderRes->id;
+                $orderItemRes = $orderItem->getOrdersItemId($idOrder);
 
-                    $orderData = $order->deleteOrders($customerOrderData[0]->id);
+                if ($orderItemRes) {
 
-                    if ($orderData || $orderData == 0) {
+                    $deleOrderItem = $orderItem->deleteOrdersItemCustomer($idOrder);
 
-                        $customerData = $customer->deleteCustomer($idCustomer);
+                    if ($deleOrderItem) {
 
-                        if ($customerData || $customerData == 0) {
+                        $deleOrder = $order->deleteOrders($idOrder);
+
+                        if ($deleOrder) {
+
+                            $order->deleteOrders($idOrder);
+                            $customer->deleteCustomer($idCustomer);
 
                             return response()->json([
                                 'status' => 'success',
-                                'data' => 'Envios cancelado com sucesso',
-                            ])->setStatusCode(200);
-
+                                'res' => 'Registro excluido com sucesso',
+                            ], 200);
                         }
+
                     }
+
+                    $order->deleteOrders($idOrder);
+                    $customer->deleteCustomer($idCustomer);
+
+                    return response()->json([
+                        'status' => 'success',
+                        'res' => 'Registro excluido com sucesso',
+                    ], 200);
+
+                } else {
+
+                    $customer->deleteCustomer($idCustomer);
+
+                    return response()->json([
+                        'status' => 'success',
+                        'res' => 'Registro excluido com sucesso',
+                    ], 200);
+
                 }
 
             } else {
 
-                return response()->json([
-                    'status' => 'erro',
-                    'data' => 'Não foi possivel cancelar o envio',
-                ])->setStatusCode(400);
+                $customerRes = $customer->getCustomerId($idCustomer);
+
+                if ($customerRes) {
+
+                    $resDataCostumer = $customer->deleteCustomer($idCustomer);
+
+                    if ($resDataCostumer || $resDataCostumer == 0) {
+
+                        return response()->json([
+                            'status' => 'success',
+                            'res' => 'Registro excluido com sucesso',
+                        ], 200);
+
+                    } else {
+
+                        return response()->json([
+                            'status' => 'erro',
+                            'res' => 'Não foi possivel cancelar pedido',
+                        ], 402);
+                    }
+
+                } else {
+
+                    return response()->json([
+                        'status' => 'erro',
+                        'res' => 'Não foi possivel cancelar pedido',
+                    ], 422);
+
+                }
+
 
             }
 
@@ -59,8 +108,8 @@ class CanceledController
 
             return response()->json([
                 'status' => 'erro',
-                'message' => 'Não foi possivel cancelar os item e envio / pedido não encontrado',
-            ], 500);
+                'res' => 'Não foi possivel cancelar pedido',
+            ], 400);
         }
     }
 }
