@@ -18,6 +18,7 @@ const InputSearch: React.FC<IInputProps> = ({
     label,
     placeholder,
     name,
+    value,
     validate,
     onChange,
     icon,
@@ -34,6 +35,7 @@ const InputSearch: React.FC<IInputProps> = ({
                     label={label}
                     type="search"
                     name={name}
+                    value={value}
                     onChange={onChange}
                     validate={validate}
                     placeholder={placeholder}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalHome from "../../components/layout/ModalHome";
 import Section from "../../components/layout/Session";
 import CustomButton from "../../components/shared/Button";
@@ -6,6 +6,7 @@ import Input from "../../components/shared/Input";
 import { registerCustomer, registerOrder } from "../../service/register";
 import { useNavigate } from "react-router-dom";
 import Text from "../../components/shared/Text";
+import CustomLink from "../../components/shared/Link";
 
 interface FormState {
     customer: string,
@@ -20,6 +21,8 @@ const PageRegister: React.FC = () => {
         customer: '',
         date: '',
     });
+
+    const [dataResMsg, setDataMsg] = useState({ status: '', res: '' })
 
     const handleCustomerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setForm({ ...form, customer: event.target.value });
@@ -53,35 +56,58 @@ const PageRegister: React.FC = () => {
 
     const sendInput = async () => {
 
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-
         if (validarInput() && validarInputData()) {
 
-            const res = await registerCustomer(form.customer)
+            const resDataCustomer = await registerCustomer(form.customer)
 
-            if (res == 'success') {
+            if (resDataCustomer.status == 'success') {
 
-                const res = await registerOrder(user.id, form.date)
+                const user = resDataCustomer.res
 
-                if (res == 'success') {
+                const resDataOrdem = await registerOrder(user.id, form.date)
+
+                if (resDataOrdem.status == 'success') {
+
+                    localStorage.setItem('user', JSON.stringify({
+                        id: resDataCustomer.res.id,
+                        name: resDataCustomer.res.name,
+                    }));
+
                     navigate('/orderproduct')
+
+                } else {
+
+                    setDataMsg(resDataOrdem.response.data)
                 }
+
+            } else {
+
+                setDataMsg(resDataCustomer.response.data)
             }
 
         } else {
+
             validarInput()
             validarInputData()
         }
 
     }
 
+    useEffect(() => { }, [dataResMsg])
+
     return (
-        <Section className="flex items-center justify-center bg-[#1E6388]">
+        <Section className="flex flex-col items-center justify-center bg-[#1E6388]">
+
+            <CustomLink to="/registrationlist" text="ver registros" className="text-md font-semibold absolute top-5 right-10 text-white" />
+
             <ModalHome>
-                <Text text="Cadastro de Pedidos" className="flex items-center justify-center text-xl font-medium font-inter text-black" />
+
+                <Text text="Cadastro de Pedidos" className="flex items-center justify-center text-xl font-medium font-inter text-black p-2" />
+                <Text text={dataResMsg.res} className={`text-md font-light font-inter ${dataResMsg.status === 'erro' || dataResMsg.status === 'default' ? 'flex w-full items-center justify-center text-red-500' : 'hidden'}`} />
+
                 <form className="w-full pl-22 pr-22 flex flex-col items-center justify-center mt-2">
                     <Input type="text" label="Cliente:" classNameLabel="text-xl font-light font-inter" classNameInput="w-full h-8 p-3 border border-[#1E6388] rounded-[6px] text-base outline-none focus:ring-2 focus:ring-[#1E6388]" validate={() => validarInput()} onChange={handleCustomerChange} />
-                    <Input type="date" label="Data de entrega: " classNameLabel="text-base font-light font-inter" classNameInput="w-[80%] h-8 p-3 border border-[#1E6388] rounded-[6px] text-base outline-none focus:ring-2 focus:ring-[#1E6388]" validate={() => validarInputData()} onChange={handleDataChange} />
+                    <Input type="date" label="Data de entrega: " min={new Date().toISOString().split("T")[0]} classNameLabel="text-base font-light font-inter" classNameInput="w-[80%] h-8 p-3 border border-[#1E6388] rounded-[6px] text-base outline-none focus:ring-2 focus:ring-[#1E6388]" validate={() => validarInputData()} onChange={handleDataChange} />
                 </form>
                 <CustomButton text="Iniciar Pedido" className="w-[50%] bg-[#1E6388] text-white font-light font-inter p-1 mb-8 border border-[#1E6388] rounded-[4px]" onClick={() => { sendInput() }} />
             </ModalHome>

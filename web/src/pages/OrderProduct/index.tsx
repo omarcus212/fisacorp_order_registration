@@ -12,8 +12,12 @@ import type { Product } from "../../interface/product";
 import type { OrderItem } from "../../interface/orderItem";
 import formatCurrency from "../../utils/Price";
 import ModalPreviewList from "../../components/layout/ModalPreviewList";
+import { canceled } from "../../service/canceled";
+import { useNavigate } from "react-router-dom";
 
 const orderProduct: React.FC = () => {
+
+    const navigate = useNavigate();
 
     const [productData, setProductData] = useState<Product[]>();
 
@@ -21,7 +25,7 @@ const orderProduct: React.FC = () => {
 
     const [modalPreviewList, setModalPreviewList] = useState<boolean>(false);
 
-    const [search, setSearch] = useState<string>('');
+    const [search, setSearch] = useState<string>();
 
     const [total, setTotal] = useState<string>();
 
@@ -48,15 +52,14 @@ const orderProduct: React.FC = () => {
 
     }
 
-    const getDataProducts = async () => {
-        const resData = await getProducts();
-        return resData.data;
+    const getDataProducts = async (searchValue?: string) => {
+        const resData = await getProducts(searchValue);
+        return resData.res;
     }
 
     const verifyListQuanty = async (product: any) => {
 
         const updatedStockData = await getDataProducts();
-        setProductData(updatedStockData);
 
         const stockItem = updatedStockData.find((item: any) => item.id === product.product_id);
         const cartItem = productList.find((item: any) => item.product_id === product.product_id);
@@ -83,7 +86,7 @@ const orderProduct: React.FC = () => {
                 if (item.product_id === product.product_id) {
                     return {
                         ...item,
-                        quantity: item.quantity + 1
+                        quantity: item.quantity !== null ? item.quantity + 1 : 0
                     };
                 }
                 return item;
@@ -92,7 +95,6 @@ const orderProduct: React.FC = () => {
             setProductList(updatedList);
         }
     };
-
 
     const handleUpdateLess = async (product: any) => {
 
@@ -105,7 +107,7 @@ const orderProduct: React.FC = () => {
             if (item.product_id === product.product_id) {
                 return {
                     ...item,
-                    quantity: item.quantity - 1
+                    quantity: item.quantity !== null ? item.quantity - 1 : 0
                 };
             }
             return item;
@@ -115,13 +117,16 @@ const orderProduct: React.FC = () => {
 
     };
 
-
     const handleRemove = (row: Product) => {
 
         const updatedList = productList.filter(item => item.product_id !== row.id)
         setProductList(updatedList)
 
     }
+
+    const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearch(event.target.value);
+    };
 
     const totalPrice = () => {
 
@@ -141,12 +146,35 @@ const orderProduct: React.FC = () => {
         setModalPreviewList(true)
     }
 
+    const cancel = async () => {
+
+        const token = localStorage.getItem("user")
+
+
+        if (token) {
+
+            const user = JSON.parse(token)
+
+            const id = Number(user.id)
+            const resData = await canceled(id);
+
+            if (resData) {
+
+                localStorage.removeItem("user")
+                navigate('/register')
+            }
+
+        }
+
+    }
+
     useEffect(() => {
 
         const PageRequests = async () => {
 
-            const res = await getProducts()
-            setProductData(res.data)
+            const resData = await getProducts(search)
+
+            setProductData(resData.res)
 
         }
 
@@ -158,37 +186,37 @@ const orderProduct: React.FC = () => {
 
     const columnsInProduction: Array<Object> = [
         {
-            name: 'Img',
-            center: true,
+            name: 'Img:',
+            center: "true",
             selector: (row: any) => (
                 <ImageView imgSrc={row.img} imgAlt={row.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
             )
         },
         {
-            name: 'Nome',
-            center: true,
+            name: 'Nome:',
+            center: "true",
             width: '35%',
             heigth: '100%',
             selector: (row: any) => row.name,
 
         },
         {
-            name: 'Preço',
-            center: true,
-            selector: (row: any) => row.price,
+            name: 'Preço:',
+            center: "true",
+            selector: (row: any) => (<p> R$ {row.price} </p>)
 
 
         },
         {
-            name: 'Estoque',
-            center: true,
-            selector: (row: any) => row.stock_quantity
+            name: 'Estoque:',
+            center: "true",
+            selector: (row: any) => (<p> {row.stock_quantity} Un.</p>)
 
         },
         {
             name: 'Action',
             width: '25%',
-            center: true,
+            center: "true",
             selector: (row: any) => {
 
                 const isInCart = productList.find(item => item.product_id === row.id);
@@ -211,14 +239,13 @@ const orderProduct: React.FC = () => {
         },
     ];
 
-
     return (
 
         <Section className="flex flex-col p-6 gap-8">
 
             <Header srcImg="/icon/logo.svg" textLink="Inicio" linkAtive={false} className="p-4" toLink="/" />
 
-            <InputSearch label="" placeholder="Busque aqui ...." icon="/icon/search.svg" />
+            <InputSearch label="" placeholder="Busque aqui ...." icon="/icon/search.svg" onChange={handleSearch} />
 
             <div className="p-6">
 
@@ -230,17 +257,16 @@ const orderProduct: React.FC = () => {
 
             <div className="flex w-full justify-between p-6">
 
-                <CustomButton text="Cancelar" className="w-54 h-8 bg-[#A11D1D] hover:bg-[#ccc] text-white font-light font-inter border-none rounded-[4px]" onClick={() => { }} />
+                <CustomButton text="Cancelar" className="w-54 h-8 bg-[#A11D1D] hover:bg-[#ccc] text-white font-light font-inter border-none rounded-[4px]" onClick={() => { cancel() }} />
                 <CustomButton text="Finalizar" className="w-54 h-8 bg-[#1E6388] hover:bg-[#ccc] text-white font-light font-inter border-none rounded-[4px]" onClick={() => conclude()} />
 
             </div>
 
             {modalPreviewList ? (
+
                 <ModalPreviewList open={modalPreviewList} onClose={() => setModalPreviewList(false)} data={productList} TotalPrice={total} />
-            ) : (
-                <>
-                </>
-            )
+
+            ) : (<></>)
 
             }
 

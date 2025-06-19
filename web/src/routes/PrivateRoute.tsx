@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface PrivateRouteProps {
@@ -6,20 +6,37 @@ interface PrivateRouteProps {
 }
 
 const PrivateRouter: React.FC<PrivateRouteProps> = ({ children }) => {
-  const navigate = useNavigate()
-  const token = localStorage.getItem("user");
+
+  const navigate = useNavigate();
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (!token) {
-      navigate('/')
-    }
-  }, [token, navigate]);
 
-  if (!token) {
-    return null;
-  }
+    const token = localStorage.getItem("user");
+
+    if (!token) {
+
+      setIsAuthenticated(false);
+
+      if (location.pathname !== '/register') {
+        navigate('/register');
+      }
+
+    } else {
+
+      setIsAuthenticated(true);
+
+    }
+
+  }, [location.pathname]);
+
+  if (isAuthenticated === null) return null;
+
+  if (!isAuthenticated) return null;
 
   return <>{children}</>;
 };
 
 export default PrivateRouter;
+

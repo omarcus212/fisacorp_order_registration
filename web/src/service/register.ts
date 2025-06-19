@@ -10,12 +10,7 @@ export const registerCustomer = async (name: string) => {
             name,
         });
 
-        localStorage.setItem('user', JSON.stringify({
-            id: response.data.data.id,
-            name: response.data.data.name,
-        }));
-
-        return response.data.status
+        return response.data
 
     } catch (error) {
 
@@ -32,11 +27,11 @@ export const registerOrder = async (idCustomer: number, date: string) => {
             date
         });
 
-        return response.data.status
+        return response.data
 
     } catch (error) {
 
-        return null
+        return error
     }
 
 }

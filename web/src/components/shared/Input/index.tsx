@@ -6,13 +6,14 @@ interface IInputProps {
     placeholder?: string,
     value?: string,
     name?: string,
+    min?: any,
     validate?: (name?: string) => boolean,
     onChange?: React.ChangeEventHandler<HTMLInputElement>,
     classNameInput?: string,
     classNameLabel?: string
 }
 
-const Input: React.FC<IInputProps> = ({ label, type, placeholder, name, value, classNameInput, classNameLabel, onChange, validate }) => {
+const Input: React.FC<IInputProps> = ({ label, type, placeholder, name, value, min, classNameInput, classNameLabel, onChange, validate }) => {
 
     const [isValid, setValid] = useState(true);
 
@@ -30,6 +31,7 @@ const Input: React.FC<IInputProps> = ({ label, type, placeholder, name, value, c
                 value={value}
                 onChange={onChange}
                 placeholder={placeholder}
+                min={min}
                 name={name}
                 className={classNameInput || "border-3 border-black h-10 rounded-lg p-3 text-black text-lg"} onBlur={validade}
             />

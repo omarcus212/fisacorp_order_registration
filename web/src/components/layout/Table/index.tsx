@@ -2,17 +2,18 @@ import React from "react";
 
 import DataTable, { type TableStyles } from "react-data-table-component";
 import type { Product } from "../../../interface/product";
-import type { OrderItem } from "../../../interface/orderItem";
+import type { Order, OrderItem } from "../../../interface/orderItem";
 
 interface ITable {
-    data: Array<Object> | Product | OrderItem | undefined,
+    data: Array<Object> | Product | OrderItem | Order | undefined,
     column: Array<Object>,
     titleTable?: string,
     typeMessage?: boolean,
-    refExcel?: any
+    refExcel?: any,
+    progressPending?: boolean,
 }
 
-const Table: React.FC<ITable> = ({ data, column, typeMessage }) => {
+const Table: React.FC<ITable> = ({ data, column, typeMessage, progressPending }) => {
 
 
     const customStyles: TableStyles = {
@@ -62,6 +63,7 @@ const Table: React.FC<ITable> = ({ data, column, typeMessage }) => {
                     customStyles={customStyles}
                     pagination={true}
                     fixedHeader={true}
+                    progressPending={progressPending}
                     noDataComponent={typeMessage ? 'Erro ao carregar os dados...' : 'Nenhum dado encontrado!'}
                     noTableHead={false}
 
