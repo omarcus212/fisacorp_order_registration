@@ -22,7 +22,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./api:/var/www 
+      - ./api:/var/www
     working_dir: /var/www
     depends_on:
       - mysql
@@ -36,7 +36,7 @@ services:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_USER: ${DB_PASSWORD:-root}
     ports:
       - "3307:3306"
     volumes:
