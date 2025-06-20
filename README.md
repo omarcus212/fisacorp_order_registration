@@ -118,6 +118,8 @@ O frontend estará rodando em http://localhost:5173
 
 > ⚠️ Esta opção é menos recomendada para desenvolvimento local, pois pode apresentar lentidão nas requisições, principalmente em ambientes como Windows ou Mac, devido ao uso de volumes e limitações de desempenho do Docker Desktop.
 
+* Reconfigure o arquivo `.env` da pasta `/api`, alterando o host do banco de dados para o nome do serviço MySQL no Docker (geralmente `backend-mysql`, conforme definido no docker-compose).
+
 * executar o composer install na api e voltar para a pasta raiz do projeto. (fisacorp_order_registration)
 
 ```bash
