@@ -52,8 +52,6 @@ cd fisacorp_order_registration
 
 ## Suba o projeto local
 
-# Projeto [Nome do Projeto]
-
 1. Entre na pasta do backend:
 ```bash
 cd api
