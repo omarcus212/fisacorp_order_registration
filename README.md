@@ -29,12 +29,12 @@ cd fisacorp_order_registration
 
 * Crie um arquivo .env na raiz do projeto.
 
-* Adicione as seguintes linhas ao arquivo .env:
-DB_DATABASE=db_order_registration
-DB_USERNAME=root
-DB_PASSWORD=
+### Adicione as seguintes linhas ao arquivo .env:
+- DB_DATABASE=db_order_registration
+- DB_USERNAME=root
+- DB_PASSWORD=
 
-* Crie um arquivo .env na raiz da pasta api.
+### Crie um arquivo .env na raiz da pasta api.
 
 * Adicione as seguintes linhas ao arquivo .env:
 - DB_CONNECTION=mysql
@@ -51,8 +51,6 @@ DB_PASSWORD=
 * ⚠️ Importante: Verifique se todas as variáveis de ambiente estão corretas antes de seguir para o próximo passo.
 
 ## Suba o projeto local
-
-# Projeto [Nome do Projeto]
 
 1. Entre na pasta do backend:
 ```bash
@@ -85,7 +83,7 @@ composer start
 ```
 
 ```bash
-O backend estará rodando em http://127.0.0.1:8000
+O backend estará rodando em http://127.0.0.1:8000/api
 ```
 
 ----------------------------------------
@@ -120,6 +118,8 @@ O frontend estará rodando em http://localhost:5173
 
 > ⚠️ Esta opção é menos recomendada para desenvolvimento local, pois pode apresentar lentidão nas requisições, principalmente em ambientes como Windows ou Mac, devido ao uso de volumes e limitações de desempenho do Docker Desktop.
 
+* Reconfigure o arquivo `.env` da pasta `/api`, alterando o host do banco de dados para o nome do serviço MySQL no Docker (geralmente `backend-mysql`, conforme definido no docker-compose).
+
 * executar o composer install na api e voltar para a pasta raiz do projeto. (fisacorp_order_registration)
 
 ```bash
@@ -130,19 +130,19 @@ cd ..
 
 1. na pasta raiz do projeto execute o comando abaixo:
 ```bash
-- docker-compose up --build -d
+docker-compose up --build -d
   ```
 
 2. Gere a key do Laravel
 ```bash
-- docker exec -it backend-api php artisan key:generate
+docker exec -it backend-api php artisan key:generate
 ```
 
 ## Execute as migrations e seeders
 
 3. Execute as migrations
 ```bash
-- docker exec -it backend-api php artisan migrate
+docker exec -it backend-api php artisan migrate
 ```
 
 - Certifique-se de que todas as migrations e seeders foram executadas corretamente.
@@ -154,7 +154,7 @@ docker exec -it backend-api php artisan migrate:fresh
 
 4. Execute os seeders
 ```bash
-- docker exec -it backend-api php artisan migrate --seed
+docker exec -it backend-api php artisan migrate --seed
 ```
 
 
