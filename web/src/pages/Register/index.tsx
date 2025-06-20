@@ -4,7 +4,7 @@ import Section from "../../components/layout/Session";
 import CustomButton from "../../components/shared/Button";
 import Input from "../../components/shared/Input";
 import { registerCustomer, registerOrder } from "../../service/register";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Text from "../../components/shared/Text";
 import CustomLink from "../../components/shared/Link";
 
@@ -93,7 +93,14 @@ const PageRegister: React.FC = () => {
 
     }
 
-    useEffect(() => { }, [dataResMsg])
+    const location = useLocation();
+
+    useEffect(() => {
+        const user = localStorage.getItem('user');
+        if (!user && location.pathname !== '/register') {
+            navigate('/register', { replace: true });
+        }
+    }, [dataResMsg])
 
     return (
         <Section className="flex flex-col items-center justify-center bg-[#1E6388]">

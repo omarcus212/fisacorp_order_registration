@@ -35,14 +35,6 @@ const RegistrationList: React.FC = () => {
 
         setList('products');
         setSearch('');
-        setDataList([]);
-
-        const resData = await getProducts('')
-
-        if (resData) {
-            setList('products')
-            setDataList(resData.res)
-        }
 
     }
 
@@ -50,14 +42,6 @@ const RegistrationList: React.FC = () => {
 
         setList('registers');
         setSearch('');
-        setDataList([]);
-
-        const resData = await getRegisterOrdersList('');
-
-        if (resData) {
-            setList('registers')
-            setDataList(resData.res)
-        }
 
     }
 

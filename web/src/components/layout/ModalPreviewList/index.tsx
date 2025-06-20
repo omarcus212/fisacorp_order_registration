@@ -71,13 +71,8 @@ const ModalPreviewList: React.FC<OrderModalProps> = ({ className, open, data, To
         if (res.status == "success") {
 
             setDataResMsg(res)
-
-            setInterval(() => {
-
-                localStorage.removeItem('user')
-                navigate('/')
-
-            }, 1000)
+            localStorage.removeItem('user')
+            navigate('/')
 
         } else {
 
