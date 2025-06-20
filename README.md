@@ -91,7 +91,7 @@ O backend estará rodando em http://127.0.0.1:8000/api
 
 1. Acesse a pasta do frontend:
 ```bash
-cd ../web
+cd web
 ```
 
 2. Instale as dependências:
@@ -157,7 +157,15 @@ docker exec -it backend-api php artisan migrate:fresh
 docker exec -it backend-api php artisan migrate --seed
 ```
 
+- Se você precisar  esvaziar o banco e recomeçar com dados novos, execute:
+```bash
+docker exec -it backend-api php artisan migrate:fresh --seed
+```
 
+- Pare e remova os containers:
+```bash
+docker exec -it backend-api php artisan migrate:fresh --seed
+```
 
 ```bash
 O frontend estará rodando em http://localhost:5173
