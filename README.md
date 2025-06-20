@@ -29,12 +29,12 @@ cd fisacorp_order_registration
 
 * Crie um arquivo .env na raiz do projeto.
 
-# Adicione as seguintes linhas ao arquivo .env:
+### Adicione as seguintes linhas ao arquivo .env:
 - DB_DATABASE=db_order_registration
 - DB_USERNAME=root
 - DB_PASSWORD=
 
-# Crie um arquivo .env na raiz da pasta api.
+### Crie um arquivo .env na raiz da pasta api.
 
 * Adicione as seguintes linhas ao arquivo .env:
 - DB_CONNECTION=mysql
