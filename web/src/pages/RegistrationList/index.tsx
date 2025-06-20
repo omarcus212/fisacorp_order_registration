@@ -23,7 +23,7 @@ const RegistrationList: React.FC = () => {
 
     const [idCostumer, setIdCostumer] = useState<number | null>();
 
-    const [list, setList] = useState<'products' | 'registers'>('registers');
+    const [list, setList] = useState<'products' | 'registers'>('products');
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -134,7 +134,7 @@ const RegistrationList: React.FC = () => {
 
                         <CustomButton text="Ver lista" className="w-full h-8 bg-[#1E6388] text-white font-light font-inter border-none rounded-[4px]" onClick={() => conclude(row)} />
 
-                        <CustomButton text="Cancelar" className="w-full h-8 bg-[#962E2E] text-white font-light font-inter border-none rounded-[4px]" onClick={() => exclude(row)} />
+                        <CustomButton text="Excluir/Cancelar" className="w-full h-8 bg-[#962E2E] text-white font-light font-inter border-none rounded-[4px]" onClick={() => exclude(row)} />
 
                     </div>
                 );
