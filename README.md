@@ -130,19 +130,19 @@ cd ..
 
 1. na pasta raiz do projeto execute o comando abaixo:
 ```bash
-- docker-compose up --build -d
+docker-compose up --build -d
   ```
 
 2. Gere a key do Laravel
 ```bash
-- docker exec -it backend-api php artisan key:generate
+docker exec -it backend-api php artisan key:generate
 ```
 
 ## Execute as migrations e seeders
 
 3. Execute as migrations
 ```bash
-- docker exec -it backend-api php artisan migrate
+docker exec -it backend-api php artisan migrate
 ```
 
 - Certifique-se de que todas as migrations e seeders foram executadas corretamente.
@@ -154,7 +154,7 @@ docker exec -it backend-api php artisan migrate:fresh
 
 4. Execute os seeders
 ```bash
-- docker exec -it backend-api php artisan migrate --seed
+docker exec -it backend-api php artisan migrate --seed
 ```
 
 
